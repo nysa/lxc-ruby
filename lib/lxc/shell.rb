@@ -82,11 +82,15 @@ module LXC
         raise ArgumentError, "Invalid command: #{command_name}."
       end
 
-      cmd = ""
-      cmd += "sudo " if use_sudo == true
-      cmd += "#{command_name} #{args.join(' ')}".strip
-      cmd += " | #{yield}" if block_given?
-      `#{cmd.strip}`
+      str = ""
+      str += "sudo " if use_sudo == true
+      str += "#{command_name} #{args.join(' ')}".strip
+      str += " | #{yield}" if block_given?
+
+      command = LXC::Command.new(str)
+      
+      command.execute
+      command.output
     end
   end
 end

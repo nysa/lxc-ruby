@@ -4,6 +4,7 @@ require 'lxc/shell'
 require 'lxc/configuration_options'
 require 'lxc/configuration'
 require 'lxc/container'
+require 'lxc/command'
 
 module LXC
   class << self

@@ -11,6 +11,10 @@ def fixture(file)
   File.read(File.join(fixture_path, file))
 end
 
+def command_path(name=nil)
+  [File.expand_path('../commands', __FILE__), name].compact.join('/')
+end
+
 def stub_lxc(command, *args)
   output = yield
   LXC.should_receive(:run).with(command, *args).and_return(output)

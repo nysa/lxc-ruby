@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'fileutils'
 
 describe LXC do
-  describe '.check_binaries' do
+  describe '#check_binaries' do
     LXC::Shell::BIN_PREFIX = '/tmp/lxc'
 
     before do
@@ -78,41 +78,35 @@ describe LXC do
     list.size.should eq(2)
   end
 
-  context 'sudo' do
-    class Foo
+  describe '#use_sudo' do
+    class SudoTest
       include LXC::Shell
     end
 
-    before do
-      LXC.use_sudo = true
-    end
-
-    it 'executes command using sudo' do
-      LXC.use_sudo.should be_true
-
-      bar = Foo.new
-      bar.should_receive(:'`').with('sudo lxc-version').and_return(fixture('lxc-version.txt'))
-      bar.run('version').should_not be_empty
-    end
-  end
-
-  context '.use_sudo' do
-    class Bar
-      include LXC::Shell
-    end
-
-    it 'should be true' do
-      foo = Bar.new
-      foo.use_sudo.should eq(true)
-      LXC.use_sudo.should eq(true)
-    end
-
-    it 'should be false' do
+    before :each do
       LXC.use_sudo = false
-      foo = Bar.new
+    end
 
-      LXC.use_sudo.should eq(false)
-      foo.use_sudo.should eq(false)
+    context 'by default' do
+      it 'returns false' do
+        SudoTest.new.use_sudo.should be_false
+        LXC.use_sudo.should be_false
+      end
+    end
+
+    it 'returns true' do
+      LXC.use_sudo = true
+
+      LXC.use_sudo.should be_true
+      SudoTest.new.use_sudo.should be_true
+    end
+
+    it 'returns false' do
+      klass = SudoTest.new
+      klass.use_sudo = true
+
+      LXC.use_sudo.should be_true
+      klass.use_sudo.should be_true
     end
   end
 end

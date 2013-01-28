@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+STDOUT.puts "STDOUT buffer"
+STDERR.puts "STDERR buffer"
+exit 0
