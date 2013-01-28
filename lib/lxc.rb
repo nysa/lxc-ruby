@@ -1,12 +1,13 @@
 require 'lxc/version'
 require 'lxc/errors'
-require 'lxc/shell'
-require 'lxc/configuration_options'
-require 'lxc/configuration'
-require 'lxc/container'
-require 'lxc/command'
 
 module LXC
+  autoload :Shell,                'lxc/shell'
+  autoload :Configuration,        'lxc/configuration'
+  autoload :ConfigurationOptions, 'lxc/configuration_options'
+  autoload :Container,            'lxc/container'
+  autoload :Command,              'lxc/command'
+
   class << self
     include LXC::Shell
 
